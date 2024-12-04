@@ -11,8 +11,8 @@ export default function MainRoutes() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

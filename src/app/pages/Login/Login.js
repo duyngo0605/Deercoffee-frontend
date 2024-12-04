@@ -2,8 +2,11 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginService } from './services/loginService';
 import './login.css';
+import { sLogin } from './loginStore';
+import Loading from '../../components/Loading/Loading';
 
 export default function Login() {
+  const isLoading = sLogin.use();
   const usernameRef = useRef('');
   const passwordRef = useRef('');
   const navigate = useNavigate();
@@ -16,16 +19,16 @@ export default function Login() {
     e.preventDefault();
     
     try {
+      sLogin.set(true);
       const loginData = {
         username: usernameRef.current,
         password: passwordRef.current
       };
 
-      const response = await loginService(loginData);
+      const response = await loginService(loginData, navigate);
       
       if (response) {
         localStorage.setItem('token', response.token);
-        navigate('/');
       }
     } catch (error) {
       console.error('Đăng nhập thất bại:', error);
@@ -33,9 +36,13 @@ export default function Login() {
     }
   };
 
+  
+
+
   return (
     <div className="login-container">
       <div className="login-box">
+        {isLoading ? <Loading /> : <></>}
         <h2>Đăng nhập</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
