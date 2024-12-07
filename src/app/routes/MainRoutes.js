@@ -5,17 +5,18 @@ import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import PageNotFound from "../layouts/PageNotFound";
 import { Login } from "../pages/Login";
+import Employee from "../pages/Employee/Employee";
 
 export default function MainRoutes() {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/employee" element={<Employee />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      <Footer />
     </BrowserRouter>
   );
 }
