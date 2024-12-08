@@ -32,7 +32,6 @@ export default function Login() {
       if (response && response.access_token) {
         // Decode token để lấy role
         const decodedToken = jwtDecode(response.access_token);
-        console.log(decodedToken)
         // Lưu thông tin user vào store và localStorage
         setUserInfo(usernameRef.current, decodedToken.role, response.access_token);
 

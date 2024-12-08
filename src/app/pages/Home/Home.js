@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import { sUserInfo } from '../Login/loginStore';
@@ -8,7 +8,8 @@ export default function Home() {
   const userInfo = sUserInfo.use();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log(userInfo);
     if (!userInfo || !userInfo.username) {
       navigate('/login');
     }

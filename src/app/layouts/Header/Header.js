@@ -1,9 +1,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { sUserInfo, clearUserInfo } from "../../pages/Login/loginStore";
 import "./Header.css";
+import { logoutService } from "../../pages/Login/services/loginService";
 
 export default function Header() {
   const navigate = useNavigate();
+  const userInfo = sUserInfo.use();
+  
+  const handleLogout = () => {
+    logoutService(navigate);
+    clearUserInfo();
+  };
   
   return (
     <header className="header">
@@ -20,8 +28,16 @@ export default function Header() {
         </nav>
 
         <div className="auth-buttons">
-          <Link to="/login" className="login-btn">Đăng nhập</Link>
-          <Link to="/register" className="register-btn">Đăng ký</Link>
+          {userInfo && userInfo.username ? (
+            <>
+              <span className="user-name">{userInfo.username}</span>
+              <button onClick={handleLogout} className="logout-btn">Đăng xuất</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="login-btn">Đăng nhập</Link>
+            </>
+          )}
         </div>
       </div>
     </header>
