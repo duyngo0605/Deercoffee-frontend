@@ -21,7 +21,7 @@ export default function Sidebar({ user, menuItems }) {
       <div className="user-profile">
         <img 
           src={getAvatar(user.role)} 
-          alt={user.name} 
+          alt={user.username} 
           className="user-avatar"
           onError={(e) => {
             e.target.onerror = null; // Prevent infinite loop
@@ -29,7 +29,7 @@ export default function Sidebar({ user, menuItems }) {
           }}
         />
         <div className="user-info">
-          <h3>{user.name}</h3>
+          <h3>{user.username}</h3>
           <span className="user-role">{user.role === 'admin' ? 'Quản trị viên' : 'Nhân viên'}</span>
         </div>
       </div>

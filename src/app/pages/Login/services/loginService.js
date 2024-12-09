@@ -1,5 +1,5 @@
 import { post } from "../../../modules/lib/httpHandle";
-import { BE_ENDPOINT, USERNAME } from "../../../../settings/localVar";
+import { BE_ENDPOINT, TOKEN, USERNAME } from "../../../../settings/localVar";
 import { sLogin } from "../loginStore";
 import { clearUserInfo } from "../loginStore";
 
@@ -11,8 +11,7 @@ export const loginService = (data, nav) => {
             `${USER}/log-in`,
             data,
             (response) => {
-                // success
-                localStorage.setItem(USERNAME, data.username);
+                localStorage.setItem(TOKEN, response.access_token);
                 sLogin.set(false);
                 nav("/");
                 resolve(response);
@@ -31,9 +30,7 @@ export const logoutService = (nav) => {
             `${USER}/log-out`,
             {},
             (response) => {
-                // success
-                localStorage.removeItem(USERNAME);
-                clearUserInfo();
+                localStorage.removeItem(TOKEN);
                 sLogin.set(false);
                 nav("/login");
                 resolve(response);

@@ -1,17 +1,18 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { sUserInfo, clearUserInfo } from "../../pages/Login/loginStore";
+import { clearUserInfo } from "../../pages/Login/loginStore";
 import "./Header.css";
 import { logoutService } from "../../pages/Login/services/loginService";
-
+import { jwtDecode } from 'jwt-decode';
+import { TOKEN } from "../../../settings/localVar";
 export default function Header() {
   const navigate = useNavigate();
-  const userInfo = sUserInfo.use();
   
   const handleLogout = () => {
     logoutService(navigate);
-    clearUserInfo();
   };
+
+  const user = jwtDecode(localStorage.getItem(TOKEN));
   
   return (
     <header className="header">
@@ -28,9 +29,9 @@ export default function Header() {
         </nav>
 
         <div className="auth-buttons">
-          {userInfo && userInfo.username ? (
+          {user && user.username ? (
             <>
-              <span className="user-name">{userInfo.username}</span>
+              <span className="user-name">{user.username}</span>
               <button onClick={handleLogout} className="logout-btn">Đăng xuất</button>
             </>
           ) : (

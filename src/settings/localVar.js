@@ -42,7 +42,7 @@ export const getMenuItems = (role) => [
     {
       title: "Quản lý thực đơn",
       icon: "restaurant_menu",
-      path: "/menu",
+      path: "/item-type",
       adminOnly: true,
     },
     {

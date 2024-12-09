@@ -2,15 +2,13 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginService } from './services/loginService';
 import './login.css';
-import { setUserInfo, sLogin, sUserInfo } from './loginStore';
+import { sLogin } from './loginStore';
 import Loading from '../../components/Loading/Loading';
-import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const isLoading = sLogin.use();
   const usernameRef = useRef('');
   const passwordRef = useRef('');
-  const userInfo = sUserInfo.use();
   const navigate = useNavigate();
 
   const handleInputChange = (ref) => (e) => {
@@ -26,16 +24,8 @@ export default function Login() {
         username: usernameRef.current,
         password: passwordRef.current
       };
-
       const response = await loginService(loginData, navigate);
-      
-      if (response && response.access_token) {
-        // Decode token để lấy role
-        const decodedToken = jwtDecode(response.access_token);
-        // Lưu thông tin user vào store và localStorage
-        setUserInfo(usernameRef.current, decodedToken.role, response.access_token);
-
-      }
+      console.log(response);
     } catch (error) {
       console.error('Đăng nhập thất bại:', error);
       alert('Tên đăng nhập hoặc mật khẩu không đúng!');

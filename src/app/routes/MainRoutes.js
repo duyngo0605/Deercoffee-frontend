@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 import Header from "../layouts/Header";
 import PageNotFound from "../layouts/PageNotFound";
 import { Login } from "../pages/Login";
-import Employee from "../pages/Employee/Employee";
+import Employee from "../pages/Employee";
 
 export default function MainRoutes() {
   return (
