@@ -5,6 +5,7 @@ import "./Header.css";
 import { logoutService } from "../../pages/Login/services/loginService";
 import { jwtDecode } from 'jwt-decode';
 import { TOKEN } from "../../../settings/localVar";
+
 export default function Header() {
   const navigate = useNavigate();
   
@@ -17,10 +18,14 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-container">
-        <div className="logo" onClick={() => navigate("/")}>
-          <span className="logo-text">Logo</span>
-        </div>
-        
+        <Link to="/" className="logo">
+          <img 
+            src={`${process.env.PUBLIC_URL}/deerCoffeeLogo.png`} 
+            alt="Deer Coffee Logo" 
+          />
+          <span className="brand-title">Deer Coffee</span>
+        </Link>
+       
         <nav className="nav-menu">
           <Link to="/" className="nav-link">Trang chủ</Link>
           <Link to="/products" className="nav-link">Sản phẩm</Link>
@@ -35,9 +40,7 @@ export default function Header() {
               <button onClick={handleLogout} className="logout-btn">Đăng xuất</button>
             </>
           ) : (
-            <>
-              <Link to="/login" className="login-btn">Đăng nhập</Link>
-            </>
+            <Link to="/login" className="login-btn">Đăng nhập</Link>
           )}
         </div>
       </div>
