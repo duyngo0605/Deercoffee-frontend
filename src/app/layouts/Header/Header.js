@@ -13,7 +13,8 @@ export default function Header() {
     logoutService(navigate);
   };
 
-  const user = jwtDecode(localStorage.getItem(TOKEN));
+  const token = localStorage.getItem(TOKEN);
+  const user = token ? jwtDecode(token) : null;
   
   return (
     <header className="header">

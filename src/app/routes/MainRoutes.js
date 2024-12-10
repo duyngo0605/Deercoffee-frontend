@@ -6,6 +6,7 @@ import PageNotFound from "../layouts/PageNotFound";
 import { Login } from "../pages/Login";
 import Employee from "../pages/Employee";
 import ItemType from "../pages/ItemType";
+import MenuItem from "../pages/MenuItem";
 
 export default function MainRoutes() {
   return (
@@ -16,6 +17,7 @@ export default function MainRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/employee" element={<Employee />} />
         <Route path="/item-type" element={<ItemType />} />
+        <Route path="/menu-item" element={<MenuItem />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

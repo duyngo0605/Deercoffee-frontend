@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, message } from 'antd';
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, PlusOutlined } from '@ant-design/icons';
-import { getItemTypes, createItemType, updateItemType, deleteItemType } from './services/itemTypeService';
-import { jwtDecode } from 'jwt-decode';
-import { TOKEN } from "../../../settings/localVar";
-import { getMenuItems } from '../../../settings/localVar';
+import { getItemType, createItemType, updateItemType, deleteItemType } from './services/itemTypeService';
 import Sidebar from '../../components/Sidebar';
 import './itemType.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemType() {
+  const navigate = useNavigate();
   const [itemTypes, setItemTypes] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const user = jwtDecode(localStorage.getItem(TOKEN));
-  const menuItems = getMenuItems(user.role);
 
   useEffect(() => {
     fetchItemTypes();
@@ -25,7 +22,7 @@ export default function ItemType() {
   const fetchItemTypes = async () => {
     setLoading(true);
     try {
-      const data = await getItemTypes();
+      const data = await getItemType();
       setItemTypes(data);
     } catch (error) {
       message.error('Không thể tải danh sách loại món');
@@ -56,8 +53,7 @@ export default function ItemType() {
   };
 
   const handleViewItems = (itemType) => {
-    // Implement navigation to menu items list
-    message.info(`Xem danh sách món của ${itemType.name}`);
+    navigate(`/menu-item?typeId=${itemType._id}`);
   };
 
   const handleSubmit = async (values) => {
@@ -79,7 +75,7 @@ export default function ItemType() {
 
   return (
     <div className="itemtype-page">
-      <Sidebar user={user} menuItems={menuItems} />
+      <Sidebar />
       <div className="content-wrapper">
         <div className="page-header">
           <h2>Quản lý loại món</h2>

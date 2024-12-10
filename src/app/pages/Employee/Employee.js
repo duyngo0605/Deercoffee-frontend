@@ -4,10 +4,7 @@ import { EditOutlined, DeleteOutlined, UserAddOutlined } from '@ant-design/icons
 import moment from 'moment';
 import './employee.css';
 import { getEmployee, createEmployee, updateEmployee, deleteEmployee } from './services/employeeService';
-import { getMenuItems } from '../../../settings/localVar';
 import Sidebar from '../../components/Sidebar';
-import { jwtDecode } from 'jwt-decode';
-import { TOKEN } from "../../../settings/localVar";
 
 export default function Employee() {
   const [employees, setEmployees] = useState([]);
@@ -15,10 +12,6 @@ export default function Employee() {
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const user = jwtDecode(localStorage.getItem(TOKEN));
-
-  const menuItems = getMenuItems(user.role);
 
   const columns = [
     {
@@ -136,7 +129,7 @@ export default function Employee() {
 
   return (
     <div className="employee-page">
-      <Sidebar user={user} menuItems={menuItems} />
+      <Sidebar  />
       <div className="content-wrapper">
         <div className="employee-page">
             <div className="page-header">

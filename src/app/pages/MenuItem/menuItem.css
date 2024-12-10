@@ -1,0 +1,160 @@
+.menuitem-page {
+    display: flex;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 24px;
+    background-color: #f0f2f5;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    margin: 0;
+}
+
+.menu-item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 24px;
+}
+
+.menu-item-card {
+    width: 300px;
+    margin: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.ant-card-meta-description {
+    height: 80px;
+    overflow: hidden;
+}
+
+/* Form styles */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.current-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.current-filter span {
+    color: #666;
+}
+
+.image-upload-container {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #d9d9d9;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: all 0.3s;
+}
+
+.image-upload-container:hover {
+    border-color: #40a9ff;
+}
+
+.image-preview {
+    margin-bottom: 16px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.paste-hint {
+    margin-top: 8px;
+    color: #888;
+    font-size: 12px;
+}
+
+.ant-upload {
+    margin: 8px 0;
+}
+
+/* Price styling */
+.menu-item-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #f56a00;
+    margin: 8px 0;
+}
+
+/* Action buttons styling */
+.menu-item-actions {
+    border-top: 1px solid #f0f0f0;
+    padding: 12px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.menu-item-actions .anticon {
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.menu-item-actions .anticon-edit {
+    color: #1890ff;
+    background-color: #e6f7ff;
+}
+
+.menu-item-actions .anticon-edit:hover {
+    background-color: #1890ff;
+    color: white;
+}
+
+.menu-item-actions .anticon-delete {
+    color: #ff4d4f;
+    background-color: #fff1f0;
+}
+
+.menu-item-actions .anticon-delete:hover {
+    background-color: #ff4d4f;
+    color: white;
+}
+
+.menu-item-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}

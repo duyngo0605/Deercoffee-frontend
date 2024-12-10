@@ -1,11 +1,11 @@
 import { post, get, put, del } from "../../../modules/lib/httpHandle";
 
-const ITEM_TYPE = 'item-type';
+const MENU_ITEM = 'menu-item';
 
-export const getItemType = (id = ' ') => {
+export const getMenuItem = (id = ' ') => {
     return new Promise((resolve, reject) => {
         get(
-            `${ITEM_TYPE}/${id}`,
+            `${MENU_ITEM}/${id}`,
             (response) => {
                 if (response.status === 'OK') {
                     resolve(response.data);
@@ -20,10 +20,10 @@ export const getItemType = (id = ' ') => {
     });
 };
 
-export const createItemType = (data) => {
+export const createMenuItem = (data) => {
     return new Promise((resolve, reject) => {
         post(
-            ITEM_TYPE,
+            MENU_ITEM,
             data,
             (response) => {
                 if (response.status === 'OK') {
@@ -39,10 +39,10 @@ export const createItemType = (data) => {
     });
 };
 
-export const updateItemType = (id, data) => {
+export const updateMenuItem = (id, data) => {
     return new Promise((resolve, reject) => {
         put(
-            `${ITEM_TYPE}/${id}`,
+            `${MENU_ITEM}/${id}`,
             data,
             (response) => {
                 if (response.status === 'OK') {
@@ -58,10 +58,10 @@ export const updateItemType = (id, data) => {
     });
 };
 
-export const deleteItemType = (id) => {
+export const deleteMenuItem = (id) => {
     return new Promise((resolve, reject) => {
         del(
-            `${ITEM_TYPE}/${id}`,
+            `${MENU_ITEM}/${id}`,
             (response) => {
                 if (response.status === 'OK') {
                     resolve(response.message);

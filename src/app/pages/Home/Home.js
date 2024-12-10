@@ -8,22 +8,22 @@ import { TOKEN } from "../../../settings/localVar";
 
 export default function Home() {
   const navigate = useNavigate();
-  
-  const user =  jwtDecode(localStorage.getItem(TOKEN));
+
+  const token = localStorage.getItem(TOKEN);
+  const user = token ? jwtDecode(token) : null;
 
   useEffect(() => {
-    console.log(user);
     if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
 
 
-  const menuItems = getMenuItems(user?.role);
+
 
   return (
     <div className="home">
-      <Sidebar user={user} menuItems={menuItems} />
+      <Sidebar />
       <div className="main-content">
       </div>
     </div>
