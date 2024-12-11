@@ -1,12 +1,13 @@
 .sidebar {
     width: 280px;
     background: white;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     border-right: 1px solid #eee;
     position: fixed;
     left: 0;
+    top: 70px;
   }
   
   .user-profile {

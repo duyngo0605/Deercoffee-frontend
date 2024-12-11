@@ -7,6 +7,7 @@
   flex: 1;
   padding: 24px;
   background-color: #f0f2f5;
+  margin-left: 280px;
 }
 
 .page-header {
@@ -30,11 +31,31 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.ant-space a {
-  color: #1890ff;
+/* Style mới cho các nút action */
+.order-action-btn {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
+  border: none;
+  transition: all 0.3s;
 }
 
-.ant-space a:hover {
-  color: #40a9ff;
+.order-action-btn.complete {
+  background-color: #52c41a;
+  color: white;
+}
+
+.order-action-btn.complete:hover {
+  background-color: #389e0d;
+}
+
+.order-action-btn.cancel {
+  background-color: #ff4d4f;
+  color: white;
+  margin-left: 8px;
+}
+
+.order-action-btn.cancel:hover {
+  background-color: #cf1322;
 } 

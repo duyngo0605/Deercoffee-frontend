@@ -95,12 +95,18 @@ export default function Order() {
         <Space size="middle">
           {record.status === 'pending' && (
             <>
-              <a onClick={() => handleStatusChange(record._id, 'completed')}>
+              <button
+                className="order-action-btn complete"
+                onClick={() => handleStatusChange(record._id, 'completed')}
+              >
                 Hoàn thành
-              </a>
-              <a onClick={() => handleStatusChange(record._id, 'cancelled')}>
+              </button>
+              <button
+                className="order-action-btn cancel"
+                onClick={() => handleStatusChange(record._id, 'cancelled')}
+              >
                 Hủy
-              </a>
+              </button>
             </>
           )}
         </Space>

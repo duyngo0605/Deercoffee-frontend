@@ -13,7 +13,7 @@ import Order from "../pages/Order/Order";
 export default function MainRoutes() {
   return (
     <BrowserRouter>
-      <Header />
+      <ProtectedRoute><Header /></ProtectedRoute>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
