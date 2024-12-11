@@ -38,3 +38,35 @@
     color: #f5222d;
     font-weight: 500;
   }
+
+  .selected-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 8px;
+  }
+  
+  .selected-item > * {
+    display: flex;
+    align-items: center;
+  }
+  
+  .selected-item > :nth-child(2) {
+    justify-content: center;
+  }
+  
+  .selected-item span:last-child {
+    justify-content: flex-end;
+  }
+  
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .quantity-control .ant-input-number {
+    width: 60px;
+  }
