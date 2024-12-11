@@ -7,17 +7,18 @@ import { Login } from "../pages/Login";
 import Employee from "../pages/Employee";
 import ItemType from "../pages/ItemType";
 import MenuItem from "../pages/MenuItem";
+import ProtectedRoute from "../components/Protectedroute/ProtectedRoute";
 
 export default function MainRoutes() {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/employee" element={<Employee />} />
-        <Route path="/item-type" element={<ItemType />} />
-        <Route path="/menu-item" element={<MenuItem />} />
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/employee" element={<ProtectedRoute><Employee /></ProtectedRoute>} />
+        <Route path="/item-type" element={<ProtectedRoute><ItemType /></ProtectedRoute>} />
+        <Route path="/menu-item" element={<ProtectedRoute><MenuItem /></ProtectedRoute>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
