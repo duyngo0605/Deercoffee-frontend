@@ -27,6 +27,73 @@
 
   .menu-items .ant-card {
     height: 100%;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+  }
+
+  .menu-items .ant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 15px rgba(24, 144, 255, 0.25);
+    border-color: #1890ff;
+  }
+
+  .menu-items .ant-card:active {
+    transform: scale(0.97);
+    background-color: #e6f7ff;
+  }
+
+  .menu-items .ant-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-items .ant-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(82, 196, 26, 0.25);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+
+  .menu-items .ant-card:active::after {
+    animation: ripple 0.4s ease-out;
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(40, 40);
+      opacity: 0;
+    }
+  }
+
+  @keyframes flash {
+    0% {
+      background-color: transparent;
+      border-color: #d9d9d9;
+    }
+    50% {
+      background-color: #f6ffed;
+      border-color: #52c41a;
+      box-shadow: 0 0 15px rgba(82, 196, 26, 0.35);
+    }
+    100% {
+      background-color: transparent;
+      border-color: #d9d9d9;
+    }
+  }
+
+  .menu-items .ant-card.flash {
+    animation: flash 0.8s ease-out;
   }
 
   .menu-items .ant-card-meta-title {
@@ -70,3 +137,35 @@
   .quantity-control .ant-input-number {
     width: 60px;
   }
+
+  .order-summary {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 40px);
+    position: fixed;
+    right: 20px;
+    top: 50px;
+    width: 25%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .order-summary h2 {
+    padding: 20px 20px 0 20px;
+    margin: 0;
+  }
+
+  .total {
+    position: fixed;
+    bottom: 16px;
+    width: 25%;
+  }
+  
+  .total h3 {
+    color: #f5222d;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  

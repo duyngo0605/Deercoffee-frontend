@@ -97,7 +97,7 @@ export default function Home() {
           <Col span={8} key={item._id}>
             <Card
               hoverable
-              onClick={() => handleAddItem(item)}
+              onClick={(e) => handleAddItem(item, e)}
               cover={item.image && <img alt={item.name} src={item.image} />}
             >
               <Card.Meta
@@ -171,8 +171,7 @@ export default function Home() {
               </div>
               <div className="total">
                 <h3>Tổng cộng: {calculateTotal().toLocaleString('vi-VN')} đ</h3>
-              </div>
-              <Button
+                <Button
                 type="primary"
                 block
                 onClick={handleCreateOrder}
@@ -180,6 +179,8 @@ export default function Home() {
               >
                 Tạo đơn hàng
               </Button>
+              </div>
+              
             </div>
           </Col>
         </Row>
