@@ -11,11 +11,7 @@ export const getMenuItems = (role) => {
         {
           title: "Quản lý đơn hàng",
           icon: "receipt",
-          path: "/orders",
-          subItems: [
-            { title: "Tạo đơn hàng", path: "/orders/new" },
-            { title: "Danh sách đơn hàng", path: "/orders/list" },
-          ]
+          path: "/order",
         },
         {
           title: "Thanh toán",

@@ -8,6 +8,7 @@ import Employee from "../pages/Employee";
 import ItemType from "../pages/ItemType";
 import MenuItem from "../pages/MenuItem";
 import ProtectedRoute from "../components/Protectedroute/ProtectedRoute";
+import Order from "../pages/Order/Order";
 
 export default function MainRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function MainRoutes() {
         <Route path="/employee" element={<ProtectedRoute><Employee /></ProtectedRoute>} />
         <Route path="/item-type" element={<ProtectedRoute><ItemType /></ProtectedRoute>} />
         <Route path="/menu-item" element={<ProtectedRoute><MenuItem /></ProtectedRoute>} />
+        <Route path="/order" element={<ProtectedRoute><Order /></ProtectedRoute>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
