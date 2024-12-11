@@ -56,13 +56,22 @@ const MenuItem = () => {
     };
 
     const handleDelete = async (id) => {
-        try {
-            await deleteMenuItem(id);
-            message.success('Xóa món thành công');
-            fetchMenuData(); // Cập nhật store toàn cục
-        } catch (error) {
-            message.error('Xóa món thất bại');
-        }
+        Modal.confirm({
+            title: 'Xác nhận xóa',
+            content: 'Bạn có chắc chắn muốn xóa món này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk: async () => {
+                try {
+                    await deleteMenuItem(id);
+                    message.success('Xóa món thành công');
+                    fetchMenuData();
+                } catch (error) {
+                    message.error('Xóa món thất bại');
+                }
+            },
+        });
     };
 
     const handleSubmit = async (values) => {

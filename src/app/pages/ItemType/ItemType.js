@@ -6,6 +6,7 @@ import { sItemTypes, sLoading, fetchMenuData } from '../Home/homeStore';
 import Sidebar from '../../components/Sidebar';
 import './itemType.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../components/Loading/Loading';
 
 export default function ItemType() {
   const navigate = useNavigate();
@@ -34,13 +35,22 @@ export default function ItemType() {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteItemType(id);
-      message.success('Xóa loại món thành công');
-      fetchMenuData();
-    } catch (error) {
-      message.error('Không thể xóa loại món');
-    }
+    Modal.confirm({
+        title: 'Xác nhận xóa',
+        content: 'Bạn có chắc chắn muốn xóa loại món này không?',
+        okText: 'Xóa',
+        okType: 'danger',
+        cancelText: 'Hủy',
+        onOk: async () => {
+            try {
+                await deleteItemType(id);
+                message.success('Xóa loại món thành công');
+                fetchMenuData();
+            } catch (error) {
+                message.error('Không thể xóa loại món');
+            }
+        },
+    });
   };
 
   const handleViewItems = (itemType) => {
@@ -56,9 +66,8 @@ export default function ItemType() {
         await createItemType(values);
         message.success('Thêm loại món thành công');
       }
-      
-      setIsModalVisible(false);
       fetchMenuData();
+      setIsModalVisible(false);
     } catch (error) {
       message.error(`Không thể ${editingId ? 'cập nhật' : 'thêm'} loại món`);
     }
@@ -66,7 +75,7 @@ export default function ItemType() {
 
   return (
     <div className="itemtype-page">
-      {loading && <div>Loading...</div>}
+      {loading ? <Loading/> : <></>}
       <Sidebar />
       <div className="content-wrapper">
         <div className="page-header">

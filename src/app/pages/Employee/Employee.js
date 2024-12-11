@@ -96,13 +96,22 @@ export default function Employee() {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteEmployee(id);
-      message.success('Xóa nhân viên thành công');
-      fetchEmployees();
-    } catch (error) {
-      message.error('Không thể xóa nhân viên');
-    }
+    Modal.confirm({
+        title: 'Xác nhận xóa',
+        content: 'Bạn có chắc chắn muốn xóa nhân viên này không?',
+        okText: 'Xóa',
+        okType: 'danger',
+        cancelText: 'Hủy',
+        onOk: async () => {
+            try {
+                await deleteEmployee(id);
+                message.success('Xóa nhân viên thành công');
+                fetchEmployees();
+            } catch (error) {
+                message.error('Không thể xóa nhân viên');
+            }
+        },
+    });
   };
 
   const handleSubmit = async (values) => {
