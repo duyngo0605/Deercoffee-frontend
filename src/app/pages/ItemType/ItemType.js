@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, message } from 'antd';
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, PlusOutlined } from '@ant-design/icons';
-import { getItemType, createItemType, updateItemType, deleteItemType } from './services/itemTypeService';
+import { createItemType, updateItemType, deleteItemType } from './services/itemTypeService';
+import { sItemTypes, sLoading, fetchMenuData } from '../Home/homeStore';
 import Sidebar from '../../components/Sidebar';
 import './itemType.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function ItemType() {
   const navigate = useNavigate();
-  const [itemTypes, setItemTypes] = useState([]);
+  const itemTypes = sItemTypes.use();
+  const loading = sLoading.use();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
-  const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
-    fetchItemTypes();
-  }, []);
-
-  const fetchItemTypes = async () => {
-    setLoading(true);
-    try {
-      const data = await getItemType();
-      setItemTypes(data);
-    } catch (error) {
-      message.error('Không thể tải danh sách loại món');
+    if (itemTypes.length === 0) {
+      fetchMenuData();
     }
-    setLoading(false);
-  };
+  }, []);
 
   const handleAdd = () => {
     setEditingId(null);
@@ -46,14 +37,14 @@ export default function ItemType() {
     try {
       await deleteItemType(id);
       message.success('Xóa loại món thành công');
-      fetchItemTypes();
+      fetchMenuData();
     } catch (error) {
       message.error('Không thể xóa loại món');
     }
   };
 
   const handleViewItems = (itemType) => {
-    navigate(`/menu-item?typeId=${itemType._id}`);
+    navigate(`/menu-item?typeId=${itemType._id}&typeName=${itemType.name}`);
   };
 
   const handleSubmit = async (values) => {
@@ -67,7 +58,7 @@ export default function ItemType() {
       }
       
       setIsModalVisible(false);
-      fetchItemTypes();
+      fetchMenuData();
     } catch (error) {
       message.error(`Không thể ${editingId ? 'cập nhật' : 'thêm'} loại món`);
     }
@@ -75,6 +66,7 @@ export default function ItemType() {
 
   return (
     <div className="itemtype-page">
+      {loading && <div>Loading...</div>}
       <Sidebar />
       <div className="content-wrapper">
         <div className="page-header">

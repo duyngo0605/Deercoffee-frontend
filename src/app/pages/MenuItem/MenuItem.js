@@ -2,56 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, Button, Modal, Form, Input, InputNumber, Select, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { getMenuItem, createMenuItem, updateMenuItem, deleteMenuItem } from './services/menuItemService';
-import { getItemType } from '../ItemType/services/itemTypeService';
+import { createMenuItem, updateMenuItem, deleteMenuItem } from './services/menuItemService';
 import ImageUploader from '../../components/ImageUploader';
 import Sidebar from '../../components/Sidebar';
 import './menuItem.css';
+import Loading from '../../components/Loading/Loading';
+import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from '../Home/homeStore';
 
 const MenuItem = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const typeId = queryParams.get('typeId');
+    const typeName = queryParams.get('typeName');
 
-    const [menuItems, setMenuItems] = useState([]);
-    const [itemTypes, setItemTypes] = useState([]);
+    const menuItems = sMenuItems.use();
+    const itemTypes = sItemTypes.use();
+    const loading = sLoading.use();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingId, setEditingId] = useState(null);
-    const [loading, setLoading] = useState(false);
-
-    const getCurrentTypeName = () => {
-        const currentType = itemTypes.find(type => type._id === typeId);
-        return currentType?.name;
-    };
+    const [localLoading, setLocalLoading] = useState(false);
 
     useEffect(() => {
-        fetchMenuItems();
-        fetchItemTypes();
-    }, [typeId]);
-
-    const fetchMenuItems = async (id = '') => {
-        try {
-            const data = await getMenuItem(id);
-            if (typeId) {
-                setMenuItems(data.filter(item => item.itemType === typeId));
-            } else {
-                setMenuItems(data);
-            }
-        } catch (error) {
-            message.error('Không thể tải danh sách món ăn');
+        if (menuItems.length === 0 || itemTypes.length === 0) {
+            fetchMenuData();
         }
-    };
+    }, []);
 
-    const fetchItemTypes = async () => {
-        try {
-            const data = await getItemType();
-            setItemTypes(data);
-        } catch (error) {
-            message.error('Không thể tải danh sách loại món');
-        }
-    };
+    // Lọc menuItems dựa trên typeId nếu có
+    const filteredMenuItems = typeId 
+        ? menuItems.filter(item => item.itemType === typeId)
+        : menuItems;
 
     const handleAdd = () => {
         setEditingId(null);
@@ -77,14 +59,14 @@ const MenuItem = () => {
         try {
             await deleteMenuItem(id);
             message.success('Xóa món thành công');
-            fetchMenuItems();
+            fetchMenuData(); // Cập nhật store toàn cục
         } catch (error) {
             message.error('Xóa món thất bại');
         }
     };
 
     const handleSubmit = async (values) => {
-        setLoading(true);
+        setLocalLoading(true);
         try {
             if (editingId) {
                 await updateMenuItem(editingId, values);
@@ -94,26 +76,22 @@ const MenuItem = () => {
                 message.success('Thêm món thành công');
             }
             setIsModalVisible(false);
-            fetchMenuItems();
+            fetchMenuData(); // Cập nhật store toàn cục
         } catch (error) {
             message.error('Thao tác thất bại');
         } finally {
-            setLoading(false);
+            setLocalLoading(false);
         }
-    };
-
-    const clearFilter = () => {
-        navigate('/menu-item');
-        fetchMenuItems();
     };
 
     return (
         <div className="menuitem-page">
+            {(loading || localLoading) && <Loading />}
             <Sidebar />
             <div className="content-wrapper">
                 <div className="page-header">
                     <div className="header-left">
-                        <h2>Quản lý thực đơn</h2>   
+                        <h2>Danh mục {typeName}</h2>   
                     </div>
                     <Button
                         type="primary"
@@ -125,7 +103,7 @@ const MenuItem = () => {
                 </div>
 
                 <div className="menu-item-grid">
-                    {menuItems.map(item => (
+                    {filteredMenuItems.map(item => (
                         <Card
                             key={item._id}
                             className="menu-item-card"
@@ -217,7 +195,7 @@ const MenuItem = () => {
                             }}>
                                 Hủy
                             </Button>
-                            <Button type="primary" htmlType="submit" loading={loading}>
+                            <Button type="primary" htmlType="submit" loading={localLoading}>
                                 {editingId ? 'Cập nhật' : 'Thêm mới'}
                             </Button>
                         </Form.Item>

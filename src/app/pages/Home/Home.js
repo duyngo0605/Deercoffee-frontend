@@ -1,43 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, InputNumber, message, Select, Row, Col, Tabs } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from './homeStore';
 import Sidebar from '../../components/Sidebar';
 import { getMenuItem } from '../MenuItem/services/menuItemService';
 import { getItemType } from '../ItemType/services/itemTypeService';
 import { createOrder } from '../Order/services/orderService';
 import './home.css';
+import Loading from '../../components/Loading/Loading';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 export default function Home() {
-  const [menuItems, setMenuItems] = useState([]);
-  const [itemTypes, setItemTypes] = useState([]);
+  const menuItems = sMenuItems.use();
+  const itemTypes = sItemTypes.use();
+  const loading = sLoading.use();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [tableNumber, setTableNumber] = useState(1);
 
   const tables = Array.from({ length: 20 }, (_, i) => i + 1);
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [menuData, typeData] = await Promise.all([
-        getMenuItem(),
-        getItemType()
-      ]);
-      setMenuItems(menuData);
-      setItemTypes(typeData);
-    } catch (error) {
-      message.error('Không thể tải danh sách món ăn');
-    } finally {
-      setLoading(false);
+    if (menuItems.length === 0 || itemTypes.length === 0) {
+      fetchMenuData();
     }
-  };
+  }, [menuItems.length, itemTypes.length]);
 
   const handleAddItem = (item) => {
     const existingItem = selectedItems.find((i) => i._id === item._id);
@@ -125,6 +113,7 @@ export default function Home() {
 
   return (
     <div className="home">
+      {loading ? <Loading /> : (<></>)}
       <Sidebar />
       <div className="main-content">
         <Row gutter={24}>
