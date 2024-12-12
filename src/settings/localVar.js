@@ -32,7 +32,7 @@ export const getMenuItems = (role) => {
         {
           title: "Quản lý ca làm việc",
           icon: "schedule",
-          path: "/shifts",
+          path: "/shift",
           adminOnly: true,
         },
         {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, InputNumber, message, Select, Row, Col, Tabs } from 'antd';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { Card, Button, InputNumber, message, Select, Row, Col, Tabs, Input } from 'antd';
+import { PlusOutlined, MinusOutlined, SearchOutlined } from '@ant-design/icons';
 import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from './homeStore';
 import Sidebar from '../../components/Sidebar';
 import { getMenuItem } from '../MenuItem/services/menuItemService';
@@ -18,6 +18,7 @@ export default function Home() {
   const loading = sLoading.use();
   const [selectedItems, setSelectedItems] = useState([]);
   const [tableNumber, setTableNumber] = useState(1);
+  const [searchText, setSearchText] = useState('');
 
   const tables = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -86,10 +87,26 @@ export default function Home() {
     }
   };
 
+  const filterItemsBySearch = (items) => {
+    if (!searchText) return items;
+    const normalizedSearch = searchText.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    
+    return items.filter(item => {
+      const normalizedName = item.name.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      return normalizedName.includes(normalizedSearch);
+    });
+  };
+
   const renderMenuItems = (typeId) => {
-    const filteredItems = typeId 
+    let filteredItems = typeId 
       ? menuItems.filter(item => item.itemType === typeId)
       : menuItems;
+    
+    filteredItems = filterItemsBySearch(filteredItems);
 
     return (
       <Row gutter={[16, 16]}>
@@ -119,7 +136,16 @@ export default function Home() {
         <Row gutter={24}>
           <Col span={16}>
             <div className="menu-items">
-              <h2>Danh sách món</h2>
+              <div className="menu-header">
+                <h2>Danh sách món</h2>
+                <Input
+                  placeholder="Tìm kiếm món..."
+                  prefix={<SearchOutlined />}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  style={{ width: 300 }}
+                  allowClear
+                />
+              </div>
               <Tabs defaultActiveKey="all">
                 <TabPane tab="Tất cả" key="all">
                   {renderMenuItems()}

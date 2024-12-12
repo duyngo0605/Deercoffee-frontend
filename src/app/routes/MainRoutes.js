@@ -8,7 +8,8 @@ import Employee from "../pages/Employee";
 import ItemType from "../pages/ItemType";
 import MenuItem from "../pages/MenuItem";
 import ProtectedRoute from "../components/Protectedroute/ProtectedRoute";
-import Order from "../pages/Order/Order";
+import Order from "../pages/Order";
+import Shift from "../pages/Shift";
 
 export default function MainRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function MainRoutes() {
         <Route path="/item-type" element={<ProtectedRoute><ItemType /></ProtectedRoute>} />
         <Route path="/menu-item" element={<ProtectedRoute><MenuItem /></ProtectedRoute>} />
         <Route path="/order" element={<ProtectedRoute><Order /></ProtectedRoute>} />
+        <Route path="/shift" element={<ProtectedRoute><Shift /></ProtectedRoute>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

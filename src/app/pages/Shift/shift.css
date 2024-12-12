@@ -1,0 +1,139 @@
+/* src/app/pages/Shift/shift.css */
+.shift-layout {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.employee-list {
+  width: 200px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.employee-droppable {
+  background: #fafafa;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.employee-item {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border: 1px solid #1890ff;
+  border-radius: 4px;
+  cursor: move;
+  user-select: none;
+  color: black;
+}
+
+.schedule-grid {
+  flex: 1;
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.time-slots {
+  width: 150px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.time-slot-header {
+  height: 100px;
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.day-column {
+  flex: 1;
+  min-width: 200px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.day-header {
+  padding: 12px 8px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.shift-slot {
+  height: 100px;
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  min-height: 100px;
+  transition: background-color 0.2s;
+}
+
+.shift-slot:hover {
+  background: #f5f5f5;
+}
+
+.assigned-employee {
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  background: #1890ff;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+  cursor: pointer; /* Thêm con trỏ pointer */
+  transition: background-color 0.2s; /* Thêm transition */
+}
+
+.assigned-employee:hover {
+  background: #40a9ff; /* Màu sáng hơn khi hover */
+}
+/* Styling for drag and drop states */
+.shift-slot.dragging-over {
+  background: #e6f7ff;
+  border: 2px dashed #1890ff;
+}
+
+.employee-item.dragging {
+  background: #f0f5ff;
+  border: 2px solid #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+}
+
+/* Weekend styling */
+.day-column:nth-child(6) .shift-slot,
+.day-column:nth-child(7) .shift-slot {
+  background: #fafafa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .shift-layout {
+    flex-direction: column;
+  }
+  
+  .employee-list {
+    width: 100%;
+  }
+  
+  .employee-droppable {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .employee-item {
+    margin-bottom: 0;
+  }
+}
