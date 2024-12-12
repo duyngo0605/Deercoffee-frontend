@@ -40,12 +40,13 @@
 }
 
 .time-slots {
+  margin-top: 40px;
   width: 150px;
   border-right: 1px solid #f0f0f0;
 }
 
 .time-slot-header {
-  height: 100px;
+  height: 180px;
   padding: 8px;
   border-bottom: 1px solid #f0f0f0;
   display: flex;
@@ -69,12 +70,34 @@
 }
 
 .shift-slot {
-  height: 100px;
+  height: 180px;
   padding: 8px;
   border-bottom: 1px solid #f0f0f0;
   background: #fff;
   min-height: 100px;
   transition: background-color 0.2s;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 #ffffff;
+}
+
+.shift-slot::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shift-slot::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.shift-slot::-webkit-scrollbar-thumb {
+  background-color: #d9d9d9;
+  border-radius: 3px;
+  border: 2px solid #ffffff;
+}
+
+.shift-slot::-webkit-scrollbar-thumb:hover {
+  background-color: #bfbfbf;
 }
 
 .shift-slot:hover {
@@ -92,13 +115,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   user-select: none;
-  cursor: pointer; /* Thêm con trỏ pointer */
-  transition: background-color 0.2s; /* Thêm transition */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.shift-slot .assigned-employee:last-child {
+  margin-bottom: 6px;
 }
 
 .assigned-employee:hover {
-  background: #40a9ff; /* Màu sáng hơn khi hover */
+  background: #40a9ff;
 }
+
 /* Styling for drag and drop states */
 .shift-slot.dragging-over {
   background: #e6f7ff;
@@ -136,4 +164,41 @@
   .employee-item {
     margin-bottom: 0;
   }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.week-navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.week-navigation .nav-button {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.week-navigation .week-label {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0 8px;
+  min-width: 160px;
+  text-align: center;
 }

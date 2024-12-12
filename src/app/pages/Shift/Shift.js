@@ -60,6 +60,15 @@ export default function Shift() {
         return;
       }
 
+      const shiftKey = `${date}-${shiftId}`;
+      const existingEmployees = shifts[shiftKey] || [];
+      
+      const isDuplicate = existingEmployees.some(emp => emp.employeeId === employee._id);
+      if (isDuplicate) {
+        message.error('Nhân viên này đã được phân công vào ca làm việc này!');
+        return;
+      }
+
       const shiftData = createShiftData(date, shift, employee._id);
       await createShift(shiftData);
       message.success('Phân ca thành công');
@@ -106,6 +115,7 @@ export default function Shift() {
 
             <div className="schedule-grid">
               <div className="time-slots">
+
                 {SHIFTS.map(shift => (
                   <div key={shift.id} className="time-slot-header">
                     {shift.name} ({shift.startTime} - {shift.endTime})
