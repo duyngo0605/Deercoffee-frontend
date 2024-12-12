@@ -102,7 +102,7 @@ export default function Home() {
             >
               <Card.Meta
                 title={item.name}
-                description={`${item.price.toLocaleString('vi-VN')} đ`}
+                description={`${item.price.toLocaleString('vi-VN')}`}
               />
             </Card>
           </Col>
@@ -165,12 +165,12 @@ export default function Home() {
                         onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
                       />
                     </div>
-                    <span>{(item.price * item.quantity).toLocaleString('vi-VN')} đ</span>
+                    <span>{(item.price * item.quantity).toLocaleString('vi-VN')}</span>
                   </div>
                 ))}
               </div>
               <div className="total">
-                <h3>Tổng cộng: {calculateTotal().toLocaleString('vi-VN')} đ</h3>
+                <h3>Tổng cộng: {calculateTotal().toLocaleString('vi-VN')}</h3>
                 <Button
                 type="primary"
                 block

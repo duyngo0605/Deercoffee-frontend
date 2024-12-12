@@ -100,7 +100,7 @@ const MenuItem = () => {
             <div className="content-wrapper">
                 <div className="page-header">
                     <div className="header-left">
-                        <h2>Danh mục {typeName}</h2>   
+                        <h2>{typeName}</h2>   
                     </div>
                     <Button
                         type="primary"

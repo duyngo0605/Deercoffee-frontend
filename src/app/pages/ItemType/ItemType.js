@@ -53,6 +53,10 @@ export default function ItemType() {
     });
   };
 
+  const handleViewAll = () => {
+    navigate('/menu-item');
+  };
+
   const handleViewItems = (itemType) => {
     navigate(`/menu-item?typeId=${itemType._id}&typeName=${itemType.name}`);
   };
@@ -80,6 +84,7 @@ export default function ItemType() {
       <div className="content-wrapper">
         <div className="page-header">
           <h2>Quản lý loại món</h2>
+          <div className="header-buttons">
           <Button 
             type="primary" 
             icon={<PlusOutlined />}
@@ -87,8 +92,15 @@ export default function ItemType() {
           >
             Thêm loại món
           </Button>
+          <Button
+            icon={<UnorderedListOutlined />}
+            onClick={handleViewAll}
+          >
+            Xem tất cả món
+          </Button>
+          </div>
+          
         </div>
-
         <div className="itemtype-list">
           {itemTypes.map(itemType => (
             <div key={itemType._id} className="itemtype-item">
