@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Card, Button, Modal, Form, Input, InputNumber, Select, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { createMenuItem, updateMenuItem, deleteMenuItem } from './services/menuItemService';
@@ -11,7 +11,6 @@ import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from '../Home/homeSto
 
 const MenuItem = () => {
     const location = useLocation();
-    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const typeId = queryParams.get('typeId');
     const typeName = queryParams.get('typeName');
@@ -28,7 +27,7 @@ const MenuItem = () => {
         if (menuItems.length === 0 || itemTypes.length === 0) {
             fetchMenuData();
         }
-    }, []);
+    }, [menuItems, itemTypes]);
 
     // Lọc menuItems dựa trên typeId nếu có
     const filteredMenuItems = typeId 

@@ -1,7 +1,6 @@
 import { post } from "../../../modules/lib/httpHandle";
-import { BE_ENDPOINT, TOKEN, USERNAME } from "../../../../settings/localVar";
+import { TOKEN } from "../../../../settings/localVar";
 import { sLogin } from "../loginStore";
-import { clearUserInfo } from "../loginStore";
 
 const USER = 'user';
 

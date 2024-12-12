@@ -91,3 +91,9 @@ export const getMenuItems = (role) => {
       return [];
   }
 };
+
+export const SHIFTS = [
+  { id: 'morning', name: 'Ca sáng', startTime: '06:00', endTime: '11:00' },
+  { id: 'afternoon', name: 'Ca chiều', startTime: '11:00', endTime: '18:00' },
+  { id: 'evening', name: 'Ca tối', startTime: '18:00', endTime: '22:00' },
+];
