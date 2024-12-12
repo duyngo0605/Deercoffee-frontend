@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Space, message } from 'antd';
+import { Table, Tag, Space, message, Input, DatePicker } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import { getOrder, updateOrder } from './services/orderService';
 import Sidebar from '../../components/Sidebar';
 import './order.css';
@@ -19,6 +21,8 @@ const statusLabels = {
 export default function Order() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [searchDate, setSearchDate] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -28,7 +32,10 @@ export default function Order() {
     setLoading(true);
     try {
       const data = await getOrder();
-      setOrders(data);
+      const sortedOrders = data.sort((a, b) => 
+        new Date(b.orderDate) - new Date(a.orderDate)
+      );
+      setOrders(sortedOrders);
     } catch (error) {
       message.error('Không thể tải danh sách đơn hàng');
     } finally {
@@ -44,6 +51,22 @@ export default function Order() {
     } catch (error) {
       message.error('Cập nhật trạng thái thất bại');
     }
+  };
+
+  const getFilteredOrders = () => {
+    return orders.filter(order => {
+      const matchesText = searchText
+        ? order.items.some(item => 
+            item.name.toLowerCase().includes(searchText.toLowerCase())
+          )
+        : true;
+
+      const matchesDate = searchDate
+        ? moment(order.orderDate).format('YYYY-MM-DD') === searchDate.format('YYYY-MM-DD')
+        : true;
+
+      return matchesText && matchesDate;
+    });
   };
 
   const columns = [
@@ -77,6 +100,12 @@ export default function Order() {
       dataIndex: 'orderDate',
       key: 'orderDate',
       render: (date) => new Date(date).toLocaleString('vi-VN'),
+      sorter: {
+        compare: (a, b) => new Date(a.orderDate) - new Date(b.orderDate),
+        multiple: 1
+      },
+      defaultSortOrder: 'descend',
+      sortDirections: ['descend', 'ascend']
     },
     {
       title: 'Trạng thái',
@@ -121,9 +150,26 @@ export default function Order() {
         <div className="page-header">
           <h2>Danh sách đơn hàng</h2>
         </div>
+        
+        <div className="search-container">
+          <Input
+            placeholder="Tìm theo tên món..."
+            prefix={<SearchOutlined />}
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            className="search-input"
+          />
+          <DatePicker
+            placeholder="Chọn ngày"
+            onChange={date => setSearchDate(date)}
+            format="DD/MM/YYYY"
+            className="date-picker"
+          />
+        </div>
+
         <Table
           columns={columns}
-          dataSource={orders}
+          dataSource={getFilteredOrders()}
           loading={loading}
           rowKey="_id"
           pagination={{

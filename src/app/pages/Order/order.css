@@ -58,4 +58,32 @@
 
 .order-action-btn.cancel:hover {
   background-color: #cf1322;
+}
+
+.search-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.search-input {
+  width: 300px;
+}
+
+.date-picker {
+  width: 200px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input,
+  .date-picker {
+    width: 100%;
+  }
 } 
