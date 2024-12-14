@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './sidebar.css';
 import { getMenuItems } from '../../../settings/localVar';
 import { jwtDecode } from 'jwt-decode';
 import { TOKEN } from '../../../settings/localVar';
+import { logoutService } from '../../pages/Login/services/loginService';
 
 export default function Sidebar() {
   const location = useLocation();
   const [expandedItem, setExpandedItem] = useState(null);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem(TOKEN);
   const user = token ? jwtDecode(token) : null;
@@ -21,6 +23,10 @@ export default function Sidebar() {
 
   const handleItemClick = (index) => {
     setExpandedItem(expandedItem === index ? null : index);
+  };
+
+  const handleLogout = () => {
+    logoutService(navigate);
   };
 
   if (!user) {
@@ -88,8 +94,8 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-footer">
-        <Link to="/logout" className="logout-button">
-          <span className="material-icons">logout</span>
+        <Link to="/logout" className="logout-button" onClick={handleLogout}>
+          <span className="material-icons" >logout</span>
           <span>Đăng xuất</span>
         </Link>
       </div>

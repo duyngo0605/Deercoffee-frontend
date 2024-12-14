@@ -196,15 +196,17 @@ export default function Home() {
                 ))}
               </div>
               <div className="total">
-                <h3>Tổng cộng: {calculateTotal().toLocaleString('vi-VN')}</h3>
+                <h3 className="totalHeading">
+                  Tổng cộng: <span className="totalAmount">{calculateTotal().toLocaleString('vi-VN')}</span>
+                </h3>
                 <Button
-                type="primary"
-                block
-                onClick={handleCreateOrder}
-                disabled={selectedItems.length === 0}
-              >
-                Tạo đơn hàng
-              </Button>
+                  type="primary"
+                  block
+                  onClick={handleCreateOrder}
+                  disabled={selectedItems.length === 0}
+                >
+                  Tạo đơn hàng
+                </Button>
               </div>
               
             </div>

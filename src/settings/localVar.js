@@ -44,7 +44,7 @@ export const getMenuItems = (role) => {
         {
           title: "Khuyến mãi",
           icon: "local_offer",
-          path: "/promotions",
+          path: "/voucher",
           adminOnly: true,
         },
         {
@@ -91,9 +91,3 @@ export const getMenuItems = (role) => {
       return [];
   }
 };
-
-export const SHIFTS = [
-  { id: 'morning', name: 'Ca sáng', startTime: '06:00', endTime: '11:00' },
-  { id: 'afternoon', name: 'Ca chiều', startTime: '11:00', endTime: '18:00' },
-  { id: 'evening', name: 'Ca tối', startTime: '18:00', endTime: '22:00' },
-];
