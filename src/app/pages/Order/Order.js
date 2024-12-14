@@ -5,6 +5,8 @@ import moment from 'moment';
 import { getOrder, updateOrder } from './services/orderService';
 import Sidebar from '../../components/Sidebar';
 import './order.css';
+import { render } from '@testing-library/react';
+import { TOKEN } from '../../../settings/localVar';
 
 const statusColors = {
   pending: 'processing',
@@ -26,6 +28,7 @@ export default function Order() {
 
   useEffect(() => {
     fetchOrders();
+    console.log(localStorage.getItem(TOKEN))
   }, []);
 
   const fetchOrders = async () => {
@@ -88,6 +91,12 @@ export default function Order() {
           ))}
         </ul>
       ),
+    },
+    {
+      title: 'Voucher',
+      dataIndex: 'voucher',
+      key: 'voucher',
+      render: (voucher) => voucher? <strong>{voucher.code}<br></br>{voucher.discount}%</strong> : 'Không áp dụng'
     },
     {
       title: 'Tổng tiền',

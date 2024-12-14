@@ -3,9 +3,8 @@ import { Card, Button, InputNumber, message, Select, Row, Col, Tabs, Input } fro
 import { PlusOutlined, MinusOutlined, SearchOutlined } from '@ant-design/icons';
 import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from './homeStore';
 import Sidebar from '../../components/Sidebar';
-import { getMenuItem } from '../MenuItem/services/menuItemService';
-import { getItemType } from '../ItemType/services/itemTypeService';
 import { createOrder } from '../Order/services/orderService';
+import { getVoucher } from '../Voucher/services/voucherService';
 import './home.css';
 import Loading from '../../components/Loading/Loading';
 
@@ -16,6 +15,8 @@ export default function Home() {
   const menuItems = sMenuItems.use();
   const itemTypes = sItemTypes.use();
   const loading = sLoading.use();
+  const [vouchers, setVouchers] = useState([]);
+  const [selectedVoucher, setSelectedVoucher] = useState();
   const [selectedItems, setSelectedItems] = useState([]);
   const [tableNumber, setTableNumber] = useState(1);
   const [searchText, setSearchText] = useState('');
@@ -26,7 +27,17 @@ export default function Home() {
     if (menuItems.length === 0 || itemTypes.length === 0) {
       fetchMenuData();
     }
-  }, [menuItems.length, itemTypes.length]);
+    fetchVouchers();
+  }, []);
+
+  const fetchVouchers = async () => {
+    try {
+      const data = await getVoucher();
+      setVouchers(data);
+    } catch (error) {
+      console.error('Error fetching vouchers:', error);
+    }
+  };
 
   const handleAddItem = (item) => {
     const existingItem = selectedItems.find((i) => i._id === item._id);
@@ -54,10 +65,14 @@ export default function Home() {
   };
 
   const calculateTotal = () => {
-    return selectedItems.reduce(
+    const subtotal = selectedItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+    if (selectedVoucher)
+      return subtotal - (subtotal * selectedVoucher.discount) / 100;
+    else
+      return subtotal;
   };
 
   const handleCreateOrder = async () => {
@@ -69,18 +84,21 @@ export default function Home() {
     try {
       const orderData = {
         table: tableNumber,
-        items: selectedItems.map(item => ({
+        items: selectedItems.map((item) => ({
           item: item._id,
           name: item.name,
           quantity: item.quantity
         })),
         totalAmount: calculateTotal(),
+        voucher: selectedVoucher,
+        finalAmount: calculateTotal(),
         status: 'pending'
       };
 
       await createOrder(orderData);
       message.success('Tạo đơn hàng thành công');
       setSelectedItems([]);
+      setSelectedVoucher();// Reset voucher
     } catch (error) {
       console.error('Error creating order:', error);
       message.error('Tạo đơn hàng thất bại');
@@ -91,21 +109,21 @@ export default function Home() {
     if (!searchText) return items;
     const normalizedSearch = searchText.toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-    
-    return items.filter(item => {
+      .replace(/[̀-ͯ]/g, '');
+
+    return items.filter((item) => {
       const normalizedName = item.name.toLowerCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
+        .replace(/[̀-ͯ]/g, '');
       return normalizedName.includes(normalizedSearch);
     });
   };
 
   const renderMenuItems = (typeId) => {
-    let filteredItems = typeId 
-      ? menuItems.filter(item => item.itemType === typeId)
+    let filteredItems = typeId
+      ? menuItems.filter((item) => item.itemType === typeId)
       : menuItems;
-    
+
     filteredItems = filterItemsBySearch(filteredItems);
 
     return (
@@ -128,9 +146,24 @@ export default function Home() {
     );
   };
 
+  const checkVoucherDate = (voucher) => {
+    const now = new Date();
+    const startDate = new Date(voucher.startDate);
+    const expiryDate = new Date(voucher.expiryDate);
+    return now >= startDate && now < expiryDate;
+  };
+
+  const handleVoucherChange = (voucher) => {
+    if (voucher) {
+      setSelectedVoucher(voucher);
+    } else {
+      setSelectedVoucher();
+    }
+  };
+
   return (
     <div className="home">
-      {loading ? <Loading /> : (<></>)}
+      {loading ? <Loading /> : <></>}
       <Sidebar />
       <div className="main-content">
         <Row gutter={24}>
@@ -150,7 +183,7 @@ export default function Home() {
                 <TabPane tab="Tất cả" key="all">
                   {renderMenuItems()}
                 </TabPane>
-                {itemTypes.map(type => (
+                {itemTypes.map((type) => (
                   <TabPane tab={type.name} key={type._id}>
                     {renderMenuItems(type._id)}
                   </TabPane>
@@ -167,8 +200,10 @@ export default function Home() {
                   onChange={setTableNumber}
                   style={{ width: '100%', marginBottom: '1rem' }}
                 >
-                  {tables.map(num => (
-                    <Option key={num} value={num}>Bàn {num}</Option>
+                  {tables.map((num) => (
+                    <Option key={num} value={num}>
+                      Bàn {num}
+                    </Option>
                   ))}
                 </Select>
               </div>
@@ -196,8 +231,39 @@ export default function Home() {
                 ))}
               </div>
               <div className="total">
+                <div>
+                  <Select
+                    style={{ width: '100%', marginBottom: '1rem' }}
+                    allowClear
+                    onChange={(value) => {
+                      const voucher = vouchers.find((v) => v._id === value);
+                      handleVoucherChange(voucher);
+                    }}
+                  >
+                    {vouchers.map((item) => (
+                      <Option
+                        key={item._id}
+                        value={item._id}
+                        disabled={!checkVoucherDate(item)}
+                      >
+                        {item.code}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
                 <h3 className="totalHeading">
-                  Tổng cộng: <span className="totalAmount">{calculateTotal().toLocaleString('vi-VN')}</span>
+                  Tổng cộng (trước giảm giá):{' '}
+                  <span className="totalAmount">
+                    {selectedItems
+                      .reduce((total, item) => total + item.price * item.quantity, 0)
+                      .toLocaleString('vi-VN')}
+                  </span>
+                </h3>
+                <h3 className="totalHeading">
+                  Giảm giá: <span className="totalAmount">{selectedVoucher ? selectedVoucher.discount : 0}%</span>
+                </h3>
+                <h3 className="totalHeading">
+                  Thành tiền: <span className="totalAmount">{calculateTotal().toLocaleString('vi-VN')}</span>
                 </h3>
                 <Button
                   type="primary"
@@ -208,7 +274,6 @@ export default function Home() {
                   Tạo đơn hàng
                 </Button>
               </div>
-              
             </div>
           </Col>
         </Row>
