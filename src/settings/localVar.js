@@ -37,12 +37,12 @@ export const getMenuItems = (role) => {
           adminOnly: true,
         },
         {
-          title: "Đặt chỗ",
+          title: "Quản lý đặt bàn",
           icon: "table_restaurant",
           path: "/reservation",
         },
         {
-          title: "Khuyến mãi",
+          title: "Quản lý khuyến mãi",
           icon: "local_offer",
           path: "/voucher",
           adminOnly: true,

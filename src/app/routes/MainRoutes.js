@@ -12,6 +12,7 @@ import Order from "../pages/Order";
 import Shift from "../pages/Shift";
 import Voucher from "../pages/Voucher";
 import Reservation from "../pages/Reservation";
+import User from "../pages/User";
 
 export default function MainRoutes() {
   return (
@@ -27,6 +28,7 @@ export default function MainRoutes() {
         <Route path="/shift" element={<ProtectedRoute><Shift /></ProtectedRoute>} /> 
         <Route path="/voucher" element={<ProtectedRoute><Voucher /></ProtectedRoute>} /> 
         <Route path="/reservation" element={<ProtectedRoute><Reservation /></ProtectedRoute>} />
+        <Route path="/user" element={<ProtectedRoute><User /></ProtectedRoute>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
