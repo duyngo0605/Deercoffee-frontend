@@ -87,17 +87,20 @@ const User = () => {
     };
 
     const handleSubmit = async (values) => {
-        if (!editingId && values.role === 'admin' && hasAdmin) {
-            message.error('Chỉ được phép tồn tại một tài khoản admin');
+        // Kiểm tra username trùng
+        const isUsernameTaken = users.some(user => 
+            user.username === values.username && user._id !== editingId
+        );
+        
+        if (isUsernameTaken) {
+            message.error('Tên đăng nhập đã tồn tại');
             return;
         }
 
-        if (editingId && values.role === 'admin' && hasAdmin) {
-            const currentUser = users.find(user => user._id === editingId);
-            if (currentUser.role !== 'admin') {
-                message.error('Chỉ được phép tồn tại một tài khoản admin');
-                return;
-            }
+        // Kiểm tra admin
+        if (!editingId && values.role === 'admin' && hasAdmin) {
+            message.error('Chỉ được phép tồn tại một tài khoản admin');
+            return;
         }
 
         setLoading(true);
@@ -236,7 +239,6 @@ const User = () => {
                                 label="Mật khẩu"
                                 rules={[
                                     { required: true, message: 'Vui lòng nhập mật khẩu' },
-                                    { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' }
                                 ]}
                             >
                                 <Input.Password />
