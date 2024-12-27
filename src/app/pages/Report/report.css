@@ -1,0 +1,62 @@
+.report-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 24px;
+  background-color: #f0f2f5;
+  margin-left: 280px; /* Để tránh đè lên sidebar */
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1f1f1f;
+  font-size: 24px;
+}
+
+/* Style cho các card */
+.MuiCard-root {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  height: 100%;
+}
+
+.MuiCardContent-root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Style cho DatePicker */
+.MuiTextField-root {
+  width: 100%;
+}
+
+/* Style cho Typography hiển thị số tiền */
+.MuiTypography-h5 {
+  color: #1a73e8;
+  font-weight: 600 !important;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .content-wrapper {
+    margin-left: 0;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .MuiCardContent-root {
+    padding: 16px !important;
+  }
+}

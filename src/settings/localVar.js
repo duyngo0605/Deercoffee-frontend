@@ -50,13 +50,8 @@ export const getMenuItems = (role) => {
         {
           title: "Báo cáo & Thống kê",
           icon: "assessment",
-          path: "/reports",
+          path: "/report",
           adminOnly: true,
-          subItems: [
-            { title: "Doanh thu", path: "/reports/revenue" },
-            { title: "Hiệu suất", path: "/reports/performance" },
-            { title: "Sở thích khách hàng", path: "/reports/preferences" },
-          ]
         },
       ];
     case 'staff':

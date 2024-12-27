@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/x-date-pickers": "^7.23.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.22.3",
+    "dayjs": "^1.11.13",
     "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "react": "^18.3.1",
@@ -15,6 +19,7 @@
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
     "react-signify": "^1.5.4",
+    "recharts": "^2.15.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
