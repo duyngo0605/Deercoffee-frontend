@@ -2,6 +2,7 @@ import { post, get } from "../../../modules/lib/httpHandle";
 
 const REPORT = 'report';
 const REVENUE = 'revenue';
+const MENUITEM = 'menu-item'
 
 export const getRevenueByDay = (data) => {
     return new Promise((resolve, reject) => {
@@ -61,10 +62,10 @@ export const getRevenueByYear = (data) => {
     });
 };
 
-export const getMonthlyDetail = (data) => {
+export const getMostOrderedMenuItemsByDay = (data) => {
     return new Promise((resolve, reject) => {
         post(
-            `${REPORT}/${REVENUE}/month-detail`,
+            `${REPORT}/${MENUITEM}/by-day`,
             data,
             (response) => {
                 if (response.status === 'OK') {
@@ -74,16 +75,16 @@ export const getMonthlyDetail = (data) => {
                 }
             },
             (error) => {
-                reject(error || 'Lấy chi tiết doanh thu tháng thất bại');
+                reject(error || 'Lấy doanh thu thất bại');
             }
         );
     });
 };
 
-export const getYearlyDetail = (data) => {
+export const getMostOrderedMenuItemsByMonth = (data) => {
     return new Promise((resolve, reject) => {
         post(
-            `${REPORT}/${REVENUE}/year-detail`,
+            `${REPORT}/${MENUITEM}/by-month`,
             data,
             (response) => {
                 if (response.status === 'OK') {
@@ -93,7 +94,26 @@ export const getYearlyDetail = (data) => {
                 }
             },
             (error) => {
-                reject(error || 'Lấy chi tiết doanh thu năm thất bại');
+                reject(error || 'Lấy doanh thu thất bại');
+            }
+        );
+    });
+};
+
+export const getMostOrderedMenuItemsByYear = (data) => {
+    return new Promise((resolve, reject) => {
+        post(
+            `${REPORT}/${MENUITEM}/by-year`,
+            data,
+            (response) => {
+                if (response.status === 'OK') {
+                    resolve(response.data);
+                } else {
+                    reject(response.message);
+                }
+            },
+            (error) => {
+                reject(error || 'Lấy doanh thu thất bại');
             }
         );
     });
