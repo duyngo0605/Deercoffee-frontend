@@ -1,9 +1,9 @@
 // src/app/pages/Shift/Shift.js
 import React, { useState, useEffect } from 'react';
-import { message, Popconfirm } from 'antd';
+import { message, Popconfirm, Modal, InputNumber, Button } from 'antd';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getEmployee } from '../Employee/services/employeeService';
-import { getShift, createShift, deleteShift } from './services/shiftService';
+import { getShift, createShift, deleteShift, updateShift } from './services/shiftService';
 import Sidebar from '../../components/Sidebar';
 import './shift.css';
 import moment from 'moment';
@@ -18,6 +18,9 @@ export default function Shift() {
   const [currentWeek, setCurrentWeek] = useState(moment());
   const [employees, setEmployees] = useState([]);
   const [shifts, setShifts] = useState({});
+  const [selectedShift, setSelectedShift] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [hoursWorked, setHoursWorked] = useState(0);
   
   useEffect(() => {
     fetchEmployees();
@@ -80,14 +83,39 @@ export default function Shift() {
     }
   };
 
-  const handleDeleteShift = async (shiftId) => {
+  const handleDeleteShift = async () => {
     try {
-      await deleteShift(shiftId);
+      await deleteShift(selectedShift._id);
       message.success('Xóa ca làm việc thành công');
-      fetchShifts(); // Refresh lại danh sách ca làm
+      setIsModalVisible(false);
+      setSelectedShift(null);
+      fetchShifts();
     } catch (error) {
       message.error('Không thể xóa ca làm việc');
     }
+  };
+
+  const handleEditShift = (shift) => {
+    setSelectedShift(shift);
+    setHoursWorked(shift.hoursWorked || 0);
+    setIsModalVisible(true);
+  };
+
+  const handleModalOk = async () => {
+    try {
+      await updateShift(selectedShift._id, { hoursWorked });
+      message.success('Cập nhật giờ làm việc thành công');
+      setIsModalVisible(false);
+      fetchShifts();
+    } catch (error) {
+      message.error('Không thể cập nhật giờ làm việc');
+    }
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+    setSelectedShift(null);
+    setHoursWorked(0);
   };
 
   const renderWeekDays = () => {
@@ -140,18 +168,15 @@ export default function Shift() {
                           className="shift-slot"
                         >
                           {shifts[`${day.format('YYYY-MM-DD')}-${shift.id}`]?.map((employee, index) => (
-                            <Popconfirm
-                              key={employee._id || index}
-                              title="Xóa ca làm việc"
-                              description="Bạn có chắc chắn muốn xóa ca làm việc này?"
-                              onConfirm={() => handleDeleteShift(employee._id)}
-                              okText="Xóa"
-                              cancelText="Hủy"
-                            >
-                              <div className="assigned-employee">
+                            <div key={employee._id || index}>
+                              <div 
+                                className="assigned-employee"
+                                onClick={() => handleEditShift(employee)}
+                              >
                                 {employee.name}
+                                {employee.hoursWorked > 0 && ` (${employee.hoursWorked}h)`}
                               </div>
-                            </Popconfirm>
+                            </div>
                           ))}
                           {provided.placeholder}
                         </div>
@@ -164,6 +189,39 @@ export default function Shift() {
           </div>
         </DragDropContext>
       </div>
+      <Modal
+        title="Chỉnh sửa giờ làm việc"
+        open={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        footer={[
+          <Popconfirm
+            key="delete"
+            title="Xóa ca làm việc"
+            description="Bạn có chắc chắn muốn xóa ca làm việc này?"
+            onConfirm={handleDeleteShift}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button danger>Xóa</Button>
+          </Popconfirm>,
+          <Button key="cancel" onClick={handleModalCancel}>
+            Hủy
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleModalOk}>
+            Cập nhật
+          </Button>,
+        ]}
+      >
+        <p>Nhân viên: {selectedShift?.name}</p>
+        <p>Số giờ làm việc:</p>
+        <InputNumber 
+          min={0} 
+          max={5} 
+          value={hoursWorked}
+          onChange={(value) => setHoursWorked(value)}
+        />
+      </Modal>
     </div>
   );
 }
