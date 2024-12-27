@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { clearUserInfo } from "../../pages/Login/loginStore";
 import "./Header.css";
 import { logoutService } from "../../pages/Login/services/loginService";
 import { jwtDecode } from 'jwt-decode';
@@ -28,10 +27,8 @@ export default function Header() {
         </Link>
        
         <nav className="nav-menu">
-          <Link to="/" className="nav-link">Trang chủ</Link>
-          <Link to="/products" className="nav-link">Sản phẩm</Link>
-          <Link to="/about" className="nav-link">Về chúng tôi</Link>
-          <Link to="/contact" className="nav-link">Liên hệ</Link>
+          <Link to="/" className="nav-link">Tạo đơn hàng</Link>
+          <Link to="/menu-item" className="nav-link">Thực đơn</Link>
         </nav>
 
         <div className="auth-buttons">

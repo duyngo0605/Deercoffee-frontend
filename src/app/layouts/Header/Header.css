@@ -66,7 +66,8 @@
 
 .auth-buttons {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .login-btn, .register-btn {
@@ -77,13 +78,19 @@
 }
 
 .login-btn {
-  color: #667eea;
-  border: 1px solid #667eea;
+  padding: 8px 20px;
+  border-radius: 20px;
+  background-color: #667eea;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  border: none;
 }
 
 .login-btn:hover {
-  background-color: #667eea;
-  color: white;
+  background-color: #5a67d8;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .register-btn {
@@ -96,25 +103,45 @@
 }
 
 .user-name {
-  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: #f7fafc;
+  border-radius: 20px;
   font-weight: 500;
-  color: #333;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.user-name::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #48bb78;
+  border-radius: 50%;
 }
 
 .logout-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  border: 1px solid #667eea;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e53e3e;
   background-color: white;
-  color: #667eea;
+  color: #e53e3e;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s ease;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .logout-btn:hover {
-  background-color: #667eea;
+  background-color: #e53e3e;
   color: white;
+  box-shadow: 0 2px 4px rgba(229, 62, 62, 0.2);
 }
 
 .brand-title {

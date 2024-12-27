@@ -141,7 +141,7 @@ const User = () => {
             title: 'Nhân viên',
             dataIndex: 'employee',
             key: 'employee',
-            render: (employee) => employee?.name || 'Chưa gán nhân viên'
+            render: (employee) => employee?.name
         },
         {
             title: 'Thao tác',
