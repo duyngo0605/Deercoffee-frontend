@@ -81,3 +81,22 @@ export const deleteEmployee = (id) => {
     });
 };
 
+// Tính Lương Nhân Viên
+export const calculateSalary = (id, data) => {
+    return new Promise((resolve, reject) => {
+        post(
+            `${EMPLOYEE}/salary/${id}`,
+            data,
+            (response) => {
+                if (response.status === 'OK') {
+                    resolve(response.data);
+                } else {
+                    reject(response.message);
+                }
+            },
+            (error) => {
+                reject(error || 'Tính lương nhân viên thất bại');
+            }
+        );
+    });
+};

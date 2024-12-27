@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, InputNumber, DatePicker, message } from 'antd';
-import { EditOutlined, DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, UserAddOutlined, CalculatorOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './employee.css';
-import { getEmployee, createEmployee, updateEmployee, deleteEmployee } from './services/employeeService';
+import { getEmployee, createEmployee, updateEmployee, deleteEmployee, calculateSalary } from './services/employeeService';
 import Sidebar from '../../components/Sidebar';
 
 export default function Employee() {
@@ -12,6 +12,11 @@ export default function Employee() {
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSalaryModalVisible, setIsSalaryModalVisible] = useState(false);
+  const [calculatingEmployeeId, setCalculatingEmployeeId] = useState(null);
+  const [salaryForm] = Form.useForm();
+  const [salaryResult, setSalaryResult] = useState(null);
+  const [calculatingEmployee, setCalculatingEmployee] = useState(null);
 
   const columns = [
     {
@@ -59,6 +64,10 @@ export default function Employee() {
             icon={<DeleteOutlined />} 
             danger
             onClick={() => handleDelete(record._id)}
+          />
+          <Button 
+            icon={<CalculatorOutlined />}
+            onClick={() => handleCalculateSalary(record._id)}
           />
         </div>
       ),
@@ -133,6 +142,26 @@ export default function Employee() {
       fetchEmployees();
     } catch (error) {
       message.error(`Không thể ${editingId ? 'cập nhật' : 'thêm'} nhân viên`);
+    }
+  };
+
+  const handleCalculateSalary = (id) => {
+    const employee = employees.find(emp => emp._id === id);
+    setCalculatingEmployee(employee);
+    setCalculatingEmployeeId(id);
+    salaryForm.resetFields();
+    setIsSalaryModalVisible(true);
+  };
+
+  const handleSalaryCalculation = async (values) => {
+    try {
+      const result = await calculateSalary(calculatingEmployeeId, {
+        startTime: values.dateRange[0].startOf('day').toISOString(),
+        endTime: values.dateRange[1].endOf('day').toISOString()
+      });
+      setSalaryResult(result);
+    } catch (error) {
+      message.error('Không thể tính lương');
     }
   };
 
@@ -244,6 +273,67 @@ export default function Employee() {
             </Button>
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Modal
+        title={
+          <div style={{ fontSize: '16px' }}>
+            Tính lương nhân viên: <span style={{ fontWeight: 'bold' }}>{calculatingEmployee?.name}</span>
+          </div>
+        }
+        open={isSalaryModalVisible}
+        onCancel={() => {
+          setIsSalaryModalVisible(false);
+          setSalaryResult(null);
+          setCalculatingEmployee(null);
+        }}
+        footer={null}
+      >
+        <Form
+          form={salaryForm}
+          layout="vertical"
+          onFinish={handleSalaryCalculation}
+        >
+          <Form.Item
+            name="dateRange"
+            label="Khoảng thời gian"
+            rules={[{ required: true, message: 'Vui lòng chọn khoảng thời gian' }]}
+          >
+            <DatePicker.RangePicker 
+              style={{ width: '100%' }}
+              format="DD/MM/YYYY"
+            />
+          </Form.Item>
+
+          <Form.Item className="form-buttons">
+            <Button onClick={() => setIsSalaryModalVisible(false)}>
+              Hủy
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Tính lương
+            </Button>
+          </Form.Item>
+        </Form>
+
+        {salaryResult && (
+          <div style={{ 
+            marginTop: '20px', 
+            padding: '15px', 
+            background: '#f5f5f5', 
+            borderRadius: '4px',
+            textAlign: 'center'
+          }}>
+            <h3>Kết quả tính lương</h3>
+            <p style={{ 
+              fontSize: '20px', 
+              fontWeight: 'bold', 
+              color: '#1890ff',
+              margin: '10px 0'
+            }}>
+              {salaryResult.toLocaleString()} VNĐ
+            </p>
+          </div>
+        )}
       </Modal>
     </div>
   );
