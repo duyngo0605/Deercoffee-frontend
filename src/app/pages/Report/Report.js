@@ -119,12 +119,18 @@ const Report = () => {
   }, [selectedDate, selectedMonth, selectedYear]);
 
   const renderMenuItems = (items) => (
-    <div style={{ marginTop: '16px' }}>
+    <div className="menu-item-list">
       {items.slice(0, 5).map((item, index) => (
-        <div key={item._id} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-          <img src={item.image} alt={item.name} style={{ width: '50px', height: '50px', marginRight: '8px' }} />
+        <div key={item._id} className="menu-item-card">
+          <img 
+            src={item.image} 
+            alt={item.name} 
+            className="menu-item-image"
+          />
           <div>
-            <Typography variant="body1">{item.name}</Typography>
+            <Typography variant="body1" style={{ marginBottom: '4px' }}>
+              {item.name}
+            </Typography>
             <Typography variant="body2">
               Số lượng: {item.quantity}
             </Typography>
@@ -144,31 +150,27 @@ const Report = () => {
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Grid container spacing={3}>
-            {/* Doanh thu theo ngày */}
+            {/* Date Pickers */}
             <Grid item xs={12} md={4}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Doanh Thu Theo Ngày
+                    Chọn Ngày
                   </Typography>
                   <DatePicker
                     value={selectedDate}
                     onChange={(newValue) => setSelectedDate(newValue)}
                     format="DD/MM/YYYY"
                   />
-                  <Typography variant="h5" style={{ marginTop: '16px' }}>
-                    {revenueData.daily.toLocaleString('vi-VN')} VNĐ
-                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
 
-            {/* Doanh thu theo tháng */}
             <Grid item xs={12} md={4}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Doanh Thu Theo Tháng
+                    Chọn Tháng
                   </Typography>
                   <DatePicker
                     value={selectedMonth}
@@ -176,19 +178,15 @@ const Report = () => {
                     views={['month', 'year']}
                     format="MM/YYYY"
                   />
-                  <Typography variant="h5" style={{ marginTop: '16px' }}>
-                    {revenueData.monthly.toLocaleString('vi-VN')} VNĐ
-                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
 
-            {/* Doanh thu theo năm */}
             <Grid item xs={12} md={4}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Doanh Thu Theo Năm
+                    Chọn Năm
                   </Typography>
                   <DatePicker
                     value={selectedYear}
@@ -196,7 +194,44 @@ const Report = () => {
                     views={['year']}
                     format="YYYY"
                   />
-                  <Typography variant="h5" style={{ marginTop: '16px' }}>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Revenue Display */}
+            <Grid item xs={12} md={4}>
+              <Card className="revenue-card">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Doanh Thu Theo Ngày
+                  </Typography>
+                  <Typography variant="h5">
+                    {revenueData.daily.toLocaleString('vi-VN')} VNĐ
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Card className="revenue-card">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Doanh Thu Theo Tháng
+                  </Typography>
+                  <Typography variant="h5">
+                    {revenueData.monthly.toLocaleString('vi-VN')} VNĐ
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Card className="revenue-card">
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Doanh Thu Theo Năm
+                  </Typography>
+                  <Typography variant="h5">
                     {revenueData.yearly.toLocaleString('vi-VN')} VNĐ
                   </Typography>
                 </CardContent>
@@ -205,6 +240,7 @@ const Report = () => {
           </Grid>
         </LocalizationProvider>
 
+        {/* Menu Items Section */}
         <Grid container spacing={3} style={{ marginTop: '24px' }}>
           <Grid item xs={12} md={4}>
             <Card>
