@@ -15,4 +15,4 @@ export const useAuth = (navigate) => {
       return user ? user.role : null;
     }
   };
-};
+}; 

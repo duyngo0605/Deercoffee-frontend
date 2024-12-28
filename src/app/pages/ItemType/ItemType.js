@@ -7,8 +7,13 @@ import Sidebar from '../../components/Sidebar';
 import './itemType.css';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function ItemType() {
+  const { getRole } = useAuth();
+  const role = getRole();
+  const isAdmin = role === 'admin';
+
   const navigate = useNavigate();
   const itemTypes = sItemTypes.use();
   const loading = sLoading.use();
@@ -85,7 +90,7 @@ export default function ItemType() {
         <div className="page-header">
           <h2>Quản lý loại món</h2>
           <div className="header-buttons">
-          <Button 
+          {isAdmin ? <><Button 
             type="primary" 
             icon={<PlusOutlined />}
             onClick={handleAdd}
@@ -97,7 +102,7 @@ export default function ItemType() {
             onClick={handleViewAll}
           >
             Xem tất cả món
-          </Button>
+          </Button></> : <></>}
           </div>
           
         </div>
@@ -115,7 +120,7 @@ export default function ItemType() {
                 >
                   Xem món
                 </Button>
-                <Button 
+                {isAdmin ? <>  <Button 
                   icon={<EditOutlined />} 
                   onClick={() => handleEdit(itemType)}
                   title="Sửa loại món"
@@ -129,7 +134,8 @@ export default function ItemType() {
                   title="Xóa loại món"
                 >
                   Xóa
-                </Button>
+                </Button></> : <></>}
+              
               </div>
             </div>
           ))}
