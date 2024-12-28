@@ -5,8 +5,13 @@ import { getVoucher, createVoucher, updateVoucher, deleteVoucher } from './servi
 import Sidebar from '../../components/Sidebar';
 import './voucher.css'
 import moment from 'moment';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Voucher() {
+  const { getRole } = useAuth();
+  const role = getRole();
+  const isAdmin = role === 'admin';
+
   const [vouchers, setVouchers] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -46,15 +51,19 @@ export default function Voucher() {
       key: 'action',
       render: (_, record) => (
         <div className="action-buttons">
-          <Button 
-            icon={<EditOutlined />} 
-            onClick={() => handleEdit(record)}
-          />
-          <Button 
-            icon={<DeleteOutlined />} 
-            danger
-            onClick={() => handleDelete(record._id)}
-          />
+          {isAdmin && (
+            <>
+              <Button 
+                icon={<EditOutlined />} 
+                onClick={() => handleEdit(record)}
+              />
+              <Button 
+                icon={<DeleteOutlined />} 
+                danger
+                onClick={() => handleDelete(record._id)}
+              />
+            </>
+          )}
         </div>
       ),
     },
@@ -140,13 +149,15 @@ export default function Voucher() {
         <div className="voucher-page">
           <div className="page-header">
             <h2>Quản lý Voucher</h2>
-            <Button 
-              type="primary" 
-              icon={<UserAddOutlined />}
-              onClick={handleAdd}
-            >
-              Thêm voucher
-            </Button>
+            {isAdmin && (
+              <Button 
+                type="primary" 
+                icon={<UserAddOutlined />}
+                onClick={handleAdd}
+              >
+                Thêm voucher
+              </Button>
+            )}
           </div>
 
           <Table 

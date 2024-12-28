@@ -7,7 +7,6 @@ export const getMenuItems = (role) => {
   switch (role) {
     case 'admin':
       return [
-        // Menu items cho Staff
         {
           title: "Quản lý tài khoản",
           icon: "manage_accounts",
@@ -56,30 +55,20 @@ export const getMenuItems = (role) => {
       ];
     case 'staff':
       return [
-        // Menu items cho Staff
         {
           title: "Quản lý đơn hàng",
           icon: "receipt",
-          path: "/orders",
-          subItems: [
-            { title: "Tạo đơn hàng", path: "/orders/new" },
-            { title: "Danh sách đơn hàng", path: "/orders/list" },
-          ]
+          path: "/order",
         },
         {
-          title: "Thanh toán",
-          icon: "payment",
-          path: "/payment",
+          title: "Xem thực đơn",
+          icon: "restaurant_menu",
+          path: "/item-type",
         },
         {
-          title: "Thống kê đơn hàng",
-          icon: "analytics",
-          path: "/statistics",
-        },
-        {
-          title: 'Menu',
-          icon: 'restaurant_menu',
-          path: '/menu-item'
+          title: "Quản lý đặt bàn",
+          icon: "table_restaurant",
+          path: "/reservation",
         },
       ];
     default:

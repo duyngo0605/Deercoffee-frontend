@@ -119,19 +119,19 @@ const Report = () => {
   }, [selectedDate, selectedMonth, selectedYear]);
 
   const renderMenuItems = (items) => (
-    <div className="menu-item-list">
+    <div className="report-menu-item-list">
       {items.slice(0, 5).map((item, index) => (
-        <div key={item._id} className="menu-item-card">
+        <div key={item._id} className="report-menu-item-card">
           <img 
             src={item.image} 
             alt={item.name} 
-            className="menu-item-image"
+            className="report-menu-item-image"
           />
           <div>
-            <Typography variant="body1" style={{ marginBottom: '4px' }}>
+            <Typography className="report-typography report-typography-body1" style={{ marginBottom: '4px' }}>
               {item.name}
             </Typography>
-            <Typography variant="body2">
+            <Typography className="report-typography report-typography-body2">
               Số lượng: {item.quantity}
             </Typography>
           </div>
@@ -143,8 +143,8 @@ const Report = () => {
   return (
     <div className="report-page">
       <Sidebar />
-      <div className="content-wrapper">
-        <div className="page-header">
+      <div className="report-content-wrapper">
+        <div className="report-page-header">
           <h2>Báo Cáo Doanh Thu</h2>
         </div>
 
@@ -152,9 +152,9 @@ const Report = () => {
           <Grid container spacing={3}>
             {/* Date Pickers */}
             <Grid item xs={12} md={4}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Chọn Ngày
                   </Typography>
                   <DatePicker
@@ -167,9 +167,9 @@ const Report = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Chọn Tháng
                   </Typography>
                   <DatePicker
@@ -183,9 +183,9 @@ const Report = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Chọn Năm
                   </Typography>
                   <DatePicker
@@ -200,12 +200,12 @@ const Report = () => {
 
             {/* Revenue Display */}
             <Grid item xs={12} md={4}>
-              <Card className="revenue-card">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Doanh Thu Theo Ngày
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography className="report-typography report-typography-h5">
                     {revenueData.daily.toLocaleString('vi-VN')} VNĐ
                   </Typography>
                 </CardContent>
@@ -213,12 +213,12 @@ const Report = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Card className="revenue-card">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Doanh Thu Theo Tháng
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography className="report-typography report-typography-h5">
                     {revenueData.monthly.toLocaleString('vi-VN')} VNĐ
                   </Typography>
                 </CardContent>
@@ -226,12 +226,12 @@ const Report = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Card className="revenue-card">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card className="report-card">
+                <CardContent className="report-card-content">
+                  <Typography className="report-typography report-typography-h6">
                     Doanh Thu Theo Năm
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography className="report-typography report-typography-h5">
                     {revenueData.yearly.toLocaleString('vi-VN')} VNĐ
                   </Typography>
                 </CardContent>
@@ -241,11 +241,11 @@ const Report = () => {
         </LocalizationProvider>
 
         {/* Menu Items Section */}
-        <Grid container spacing={3} style={{ marginTop: '24px' }}>
+        <Grid container spacing={3} className="report-grid-container">
           <Grid item xs={12} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
+            <Card className="report-card">
+              <CardContent className="report-card-content">
+                <Typography className="report-typography report-typography-h6">
                   Món Ăn Bán Chạy Theo Ngày
                 </Typography>
                 {renderMenuItems(menuItems.daily)}
@@ -254,9 +254,9 @@ const Report = () => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
+            <Card className="report-card">
+              <CardContent className="report-card-content">
+                <Typography className="report-typography report-typography-h6">
                   Món Ăn Bán Chạy Theo Tháng
                 </Typography>
                 {renderMenuItems(menuItems.monthly)}
@@ -265,9 +265,9 @@ const Report = () => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
+            <Card className="report-card">
+              <CardContent className="report-card-content">
+                <Typography className="report-typography report-typography-h6">
                   Món Ăn Bán Chạy Theo Năm
                 </Typography>
                 {renderMenuItems(menuItems.yearly)}

@@ -65,7 +65,6 @@ export default function Login() {
         </form>
         <div className="additional-options">
           <a href="#">Quên mật khẩu?</a>
-          <a href="#">Đăng ký tài khoản mới</a>
         </div>
       </div>
     </div>

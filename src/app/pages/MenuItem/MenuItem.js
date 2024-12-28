@@ -8,8 +8,13 @@ import Sidebar from '../../components/Sidebar';
 import './menuItem.css';
 import Loading from '../../components/Loading/Loading';
 import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from '../Home/homeStore';
+import { useAuth } from '../../hooks/useAuth';
 
 const MenuItem = () => {
+    const { getRole } = useAuth();
+    const role = getRole();
+    const isAdmin = role === 'admin';
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const typeId = queryParams.get('typeId');
@@ -29,7 +34,6 @@ const MenuItem = () => {
         }
     }, [menuItems, itemTypes]);
 
-    // Lọc menuItems dựa trên typeId nếu có
     const filteredMenuItems = typeId 
         ? menuItems.filter(item => item.itemType === typeId)
         : menuItems;
@@ -84,7 +88,7 @@ const MenuItem = () => {
                 message.success('Thêm món thành công');
             }
             setIsModalVisible(false);
-            fetchMenuData(); // Cập nhật store toàn cục
+            fetchMenuData();
         } catch (error) {
             message.error('Thao tác thất bại');
         } finally {
@@ -101,13 +105,15 @@ const MenuItem = () => {
                     <div className="header-left">
                         <h2>{typeName}</h2>   
                     </div>
-                    <Button
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        onClick={handleAdd}
-                    >
-                        Thêm món mới
-                    </Button>
+                    {isAdmin && (
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={handleAdd}
+                        >
+                            Thêm món mới
+                        </Button>
+                    )}
                 </div>
 
                 <div className="menu-item-grid">
@@ -122,12 +128,12 @@ const MenuItem = () => {
                                     className="menu-item-image"
                                 />
                             }
-                            actions={[
+                            actions={isAdmin ? [
                                 <div className="menu-item-actions">
                                     <EditOutlined key="edit" onClick={() => handleEdit(item)} />
                                     <DeleteOutlined key="delete" onClick={() => handleDelete(item._id)} />
                                 </div>
-                            ]}
+                            ] : []}
                         >
                             <Card.Meta
                                 title={<div className="menu-item-name">{item.name}</div>}
