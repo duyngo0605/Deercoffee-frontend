@@ -70,6 +70,11 @@ export const getMenuItems = (role) => {
           icon: "table_restaurant",
           path: "/reservation",
         },
+        {
+          title: "Xem danh sách khuyến mãi",
+          icon: "local_offer",
+          path: "/voucher",
+        },
       ];
     default:
       return [];
