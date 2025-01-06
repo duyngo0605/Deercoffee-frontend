@@ -171,3 +171,15 @@
 .report-grid-container + .report-grid-container {
   margin-top: 32px;
 }
+
+/* Thêm style cho nút xuất báo cáo */
+.MuiButton-root {
+  margin-top: 16px !important;
+  background-color: #2980b9 !important;
+  text-transform: none !important;
+  font-family: 'Times New Roman', Times, serif !important;
+}
+
+.MuiButton-root:hover {
+  background-color: #2471a3 !important;
+}
