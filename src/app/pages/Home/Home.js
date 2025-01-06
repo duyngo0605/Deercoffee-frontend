@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, InputNumber, message, Select, Row, Col, Tabs, Input } from 'antd';
+import { Card, Button, InputNumber, message, Select, Row, Col, Tabs, Input, Modal } from 'antd';
 import { PlusOutlined, MinusOutlined, SearchOutlined } from '@ant-design/icons';
 import { sMenuItems, sItemTypes, sLoading, fetchMenuData } from './homeStore';
 import Sidebar from '../../components/Sidebar';
@@ -7,6 +7,7 @@ import { createOrder } from '../Order/services/orderService';
 import { getVoucher } from '../Voucher/services/voucherService';
 import './home.css';
 import Loading from '../../components/Loading/Loading';
+import html2pdf from 'html2pdf.js';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -20,6 +21,8 @@ export default function Home() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [tableNumber, setTableNumber] = useState(1);
   const [searchText, setSearchText] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
 
   const tables = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -87,6 +90,7 @@ export default function Home() {
         items: selectedItems.map((item) => ({
           item: item._id,
           name: item.name,
+          price: item.price,
           quantity: item.quantity
         })),
         totalAmount: calculateTotal(),
@@ -95,14 +99,20 @@ export default function Home() {
         status: 'pending'
       };
 
-      await createOrder(orderData);
+      const createdOrder = await createOrder(orderData);
+      setOrderDetails(createdOrder);
+      setIsModalVisible(true);
       message.success('Tạo đơn hàng thành công');
-      setSelectedItems([]);
-      setSelectedVoucher();// Reset voucher
     } catch (error) {
       console.error('Error creating order:', error);
       message.error('Tạo đơn hàng thất bại');
     }
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedItems([]);
+    setSelectedVoucher();
   };
 
   const filterItemsBySearch = (items) => {
@@ -159,6 +169,19 @@ export default function Home() {
     } else {
       setSelectedVoucher();
     }
+  };
+
+  const handleExportPDF = () => {
+    const element = document.getElementById('invoice-content');
+    const opt = {
+      margin: 1,
+      filename: `hoa-don-ban-${orderDetails.table}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
   };
 
   return (
@@ -278,6 +301,81 @@ export default function Home() {
           </Col>
         </Row>
       </div>
+      
+      <Modal
+        title="Chi tiết hóa đơn"
+        open={isModalVisible}
+        onOk={handleModalClose}
+        onCancel={handleModalClose}
+        footer={[
+          <Button key="export" type="primary" onClick={handleExportPDF} style={{ marginRight: 8 }}>
+            Xuất PDF
+          </Button>,
+          <Button key="close" onClick={handleModalClose}>
+            Đóng
+          </Button>
+        ]}
+      >
+        {orderDetails && (
+          <div className="invoice-details" id="invoice-content">
+            <div className="invoice-header">
+              <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>DEER COFFEE</h1>
+              <p style={{ textAlign: 'center', margin: '5px 0' }}>123 Nguyễn Văn A, Quận 1, TP.HCM</p>
+              <p style={{ textAlign: 'center', margin: '5px 0' }}>Hotline: 0123 456 789</p>
+              <h2 style={{ textAlign: 'center', margin: '20px 0' }}>HÓA ĐƠN THANH TOÁN</h2>
+            </div>
+            <div className="invoice-info">
+              <p><strong>Bàn số:</strong> {orderDetails.table}</p>
+              <p><strong>Thời gian:</strong> {new Date(orderDetails.orderDate).toLocaleString('vi-VN')}</p>
+            </div>
+            <div className="order-items">
+              <table className="invoice-table">
+                <thead>
+                  <tr>
+                    <th>Tên món</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderDetails.items.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.price?.toLocaleString('vi-VN')} đ</td>
+                      <td>{(item.price * item.quantity)?.toLocaleString('vi-VN')} đ</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="invoice-summary">
+              <div className="summary-row">
+                <span>Tổng cộng:</span>
+                <span><strong>{selectedItems
+                  .reduce((total, item) => total + item.price * item.quantity, 0)
+                  .toLocaleString('vi-VN')}</strong></span>
+              </div>
+              {orderDetails.voucher && (
+                <>
+                  <div className="summary-row">
+                    <span>Mã giảm giá ({selectedVoucher?.code}):</span>
+                    <span><strong>{selectedVoucher?.discount}%</strong></span>
+                  </div>
+                  <div className="summary-row">
+                    <span>Thành tiền:</span>
+                    <span><strong>{calculateTotal().toLocaleString('vi-VN')}</strong></span>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="invoice-footer">
+              <p style={{ textAlign: 'center', marginTop: '30px' }}>Cảm ơn quý khách và hẹn gặp lại!</p>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

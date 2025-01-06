@@ -220,3 +220,122 @@
 .totalAmount {
   margin-left: auto; /* Đẩy phần tử này sang cuối dòng */
 }
+
+.invoice-details {
+  padding: 10px;
+}
+
+.invoice-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.voucher-info {
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.total-amount {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+/* Thêm styles cho bảng trong hóa đơn */
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.invoice-table th {
+  background-color: #f5f5f5;
+}
+
+.invoice-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Cập nhật styles cho invoice-details */
+.invoice-details {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.voucher-info {
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.total-amount {
+  margin-top: 20px;
+  border-top: 2px solid #ddd;
+  padding-top: 10px;
+  text-align: right;
+}
+
+/* Thêm styles cho invoice-info */
+.invoice-info {
+  margin: 20px 0;
+  padding: 10px;
+  border-bottom: 1px dashed #ddd;
+}
+
+/* Thêm styles cho invoice-summary */
+.invoice-summary {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+}
+
+.summary-row.total {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #ddd;
+  font-size: 1.2em;
+}
+
+/* Cập nhật invoice-header */
+.invoice-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.invoice-header p {
+  color: #666;
+  margin: 5px 0;
+}
+
+/* Thêm styles cho invoice-footer */
+.invoice-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+  color: #666;
+}
